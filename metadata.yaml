@@ -1,5 +1,5 @@
 homepage: 'https://www.knapstad.dev'
 documentation: ''
 versions:
-  - sha: 0004e97eb7d3268f6980aa98ebde3f43f818523c
+  - sha: f1e6ee0f8b3f240dd16797c8e53bf7fb1efd395f
     changeNotes: Initial release
