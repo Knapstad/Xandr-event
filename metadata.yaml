@@ -1,5 +1,9 @@
 homepage: 'https://www.knapstad.dev'
 documentation: ''
 versions:
+  #Latest version
+  - sha: b0051534167fc66cb3b4ab9e01864b649d1237ba
+    changeNotes: Added new logo
+  # Previous versions
   - sha: f1e6ee0f8b3f240dd16797c8e53bf7fb1efd395f
     changeNotes: Initial release
