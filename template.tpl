@@ -1,19 +1,11 @@
-﻿___TERMS_OF_SERVICE___
-
-By creating or modifying this file you agree to Google Tag Manager's Community
-Template Gallery Developer Terms of Service available at
-https://developers.google.com/tag-manager/gallery-tos (or such other URL as
-Google may provide), as modified from time to time.
-
-
-___INFO___
+﻿___INFO___
 
 {
   "type": "TAG",
   "id": "cvt_temp_public_id",
   "version": 1,
   "securityGroups": [],
-  "displayName": "Xandr event",
+  "displayName": "Xandr event | custom params",
   "categories": [
     "ANALYTICS",
     "ADVERTISING",
@@ -162,6 +154,56 @@ ___TEMPLATE_PARAMETERS___
         ]
       }
     ]
+  },
+  {
+    "type": "CHECKBOX",
+    "name": "custom_params",
+    "checkboxText": "Add custom parameters",
+    "simpleValueType": true,
+    "subParams": [
+      {
+        "type": "GROUP",
+        "name": "customParams",
+        "displayName": "",
+        "groupStyle": "NO_ZIPPY",
+        "subParams": [
+          {
+            "type": "SIMPLE_TABLE",
+            "name": "objectPropertyList",
+            "displayName": "",
+            "simpleTableColumns": [
+              {
+                "defaultValue": "",
+                "displayName": "Parameter name",
+                "name": "name",
+                "type": "TEXT"
+              },
+              {
+                "defaultValue": "",
+                "displayName": "Parameter value",
+                "name": "value",
+                "type": "TEXT"
+              }
+            ],
+            "newRowButtonText": "Add parameter"
+          }
+        ],
+        "enablingConditions": [
+          {
+            "paramName": "custom_params",
+            "paramValue": true,
+            "type": "EQUALS"
+          }
+        ]
+      }
+    ],
+    "enablingConditions": [
+      {
+        "paramName": "use_params",
+        "paramValue": true,
+        "type": "EQUALS"
+      }
+    ]
   }
 ]
 
@@ -174,6 +216,7 @@ const createQueue = require('createQueue');
 const setInWindow = require('setInWindow');
 const injectScript = require('injectScript');
 const JSON = require('JSON');
+const makeTableMap = require('makeTableMap');
 const log = data.debug ? logToConsole : () => {};
 const tracking_id = data.UNIVERSAL_PIXEL_UUID;
 const use_params = data.use_params;
@@ -184,7 +227,7 @@ const item_name = data.Item_name;
 const value = data.value;
 const default_event = data.default_event;
 const custom_event = data.custom_event;
-const custom_params = data.custom_parameters;
+const custom_params = data.custom_params;
 
 
 const onSuccess = () => {
@@ -220,15 +263,45 @@ if(event_type =='default_events'){
   event = custom_event;
   log('event: ' + event);
 }
+
+// Define the params object
 let params = {};
-if (use_params){
-  params = {item_id: item_id, item_type: item_type, item_name: item_name, value: value};
-  log("use_params: " + "use_params == true, sending with parameters, event: " + event);
-  pixie('event', event, params);
-} else {
-  log("no params, event:" + event);
-  pixie('event', event);
+
+// Set the params object if 'use_params' is true
+if (use_params) {
+  params = {
+    item_id: item_id,
+    item_type: item_type,
+    item_name: item_name,
+    value: value
+  };
+  log("use_params: Sending with parameters, event: " + event);
 }
+
+// Define the custom_params object
+let customParams = {};
+// Set the customParams object if 'custom_params' is true
+if (custom_params) {
+ customParams = data.objectPropertyList && data.objectPropertyList.length ? makeTableMap(data.objectPropertyList, 'name', 'value') : {};
+}
+log('parameters' + customParams);
+
+const mergeObjects = (obj, obj2) => {
+  for (let key in obj2) {
+    if (obj2.hasOwnProperty(key)) {
+      obj[key] = obj2[key];
+    }
+  }
+  return obj;
+};
+
+// Merge params and customParams into a single object
+const mergedParams = mergeObjects(params, customParams);
+
+// Log the merged parameters (JSON.stringify ensures proper object display)
+log("Sending event with merged parameters: " + JSON.stringify(mergedParams) + " Event: " + event);
+
+pixie('event', event, mergedParams);
 
 const url = 'https://acdn.adnxs.com/dmp/up/pixie.js';
 injectScript(url, onSuccess, onFailure, url);
