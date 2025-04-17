@@ -2,7 +2,7 @@ homepage: 'https://www.knapstad.dev'
 documentation: 'https://www.github.com/knapstad/gtm-templates'
 versions:
   # Latest version
-  - sha: b85d12affa22d429becc29d65e47b2cb46a0e6cc
+  - sha: c3efbbae8d6cffef63bcb0c1651e70904164134a
     changeNotes:  This update enhances the Xandr Event Tag functionality with improved parameter support    
     
   # Previous versions
