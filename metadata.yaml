@@ -3,12 +3,10 @@ documentation: ''
 versions:
   # Latest version
   - sha: 86dba33230803ddd162dbe502faf4b6d0dbd3798
-    changeNotes:  This update enhances the Xandr Event Tag functionality with improved parameter support
-                  
+    changeNotes:  This update enhances the Xandr Event Tag functionality with improved parameter support                  
   # Previous versions
   - sha: eb33c4c5266b928ef3e9a4cc2c22043dc2844c3c
     changeNotes: Added support for custom events
- 
   - sha: b0051534167fc66cb3b4ab9e01864b649d1237ba
     changeNotes: Added new logo
   - sha: f1e6ee0f8b3f240dd16797c8e53bf7fb1efd395f
