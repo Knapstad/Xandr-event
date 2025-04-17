@@ -2,7 +2,7 @@ homepage: 'https://www.knapstad.dev'
 documentation: ''
 versions:
   #Latest version
-  - sha: a3a246844629a8bcef58c97aef1a4871e37b7570
+  - sha: 86dba33230803ddd162dbe502faf4b6d0dbd3798
     changeNotes:  This update enhances the Xandr Event Tag functionality with improved parameter support:
                   ✅ Standard Parameters- Added support for item_id, item_name, item_type, and value
                   🛠️ Custom Parameters- Introduced the ability to include user-defined fields for greater flexibility
